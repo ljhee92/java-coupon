@@ -116,6 +116,13 @@ public class IndexPerformanceTest {
         assertThat(averageElapsedTime).isLessThanOrEqualTo(500L);
     }
 
+    /*
+        1. 해결 방안
+            - member_id 단일 인덱스 추가
+            - 기존 쿼리는 used, coupon_id 복합 인덱스를 사용했는데, used의 카디널리티가 높기 때문에 인덱스를 타지만 의미가 없음
+            - where 조건절 중 카디널리티가 높을 것으로 예상되는 member_id 를 단일 인덱스로 추가
+        2. 개선된 성능 시간: 966ms -> 5ms
+    */
     @Test
     void 회원이_가지고_있는_사용_가능한_쿠폰_조회() throws InterruptedException {
         AtomicBoolean running = new AtomicBoolean(false);
