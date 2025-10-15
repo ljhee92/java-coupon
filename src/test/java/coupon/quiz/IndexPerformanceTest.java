@@ -59,6 +59,10 @@ public class IndexPerformanceTest {
         assertThat(averageElapsedTime).isLessThanOrEqualTo(100L);
     }
 
+    /*
+        해결 방안
+        - 이미 member_coupon 테이블에 coupon_id, used 복합 인덱스가 걸려 있다.
+    */
     @Test
     void 쿠폰의_사용_수량_조회() throws InterruptedException {
         AtomicBoolean running = new AtomicBoolean(false);
