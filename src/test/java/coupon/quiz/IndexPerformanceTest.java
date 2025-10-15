@@ -146,6 +146,16 @@ public class IndexPerformanceTest {
         assertThat(averageElapsedTime).isLessThanOrEqualTo(100L);
     }
 
+    /*
+        1. 해결 방안
+            - coupon_discount_amount DESC, month, year 복합 인덱스 추가
+            - coupon_discount_amount DESC 단일 인덱스 추가
+            - 복합 인덱스 추가 시 단일 인덱스보다 카디널리티(중복도)가 더 줄어들지만, 크게 성능 차이는 없다.
+        2. 개선된 성능 시간: 306ms
+           -> 18ms(idx_year_month_coupon_discount_amount)
+           -> 6~7ms(idx_coupon_discount_amount_month_year)
+           -> 7ms(idx_coupon_discount_amount)
+    */
     @Test
     void 월별_쿠폰_할인을_가장_많이_받은_회원_조회() throws InterruptedException {
         AtomicBoolean running = new AtomicBoolean(false);
