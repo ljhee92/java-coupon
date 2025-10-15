@@ -29,6 +29,13 @@ public class IndexPerformanceTest {
         RestAssured.baseURI = BASE_URI;
     }
 
+    /*
+        1. 해결 방안
+        - member_coupon 테이블에 coupon_id를 fk로 설정한다.
+        - member_coupon 테이블에 coupon_id를 단일 index로 설정한다.
+        - member_coupon 테이블에 설정되어 있는 used, coupon_id 복합 인덱스의 순서를 coupon_id, used로 변경한다.
+        2. 개선된 성능 시간: 127ms -> 6ms
+    */
     @Test
     void 쿠폰의_발급_수량_조회() throws InterruptedException {
         AtomicBoolean running = new AtomicBoolean(false);
