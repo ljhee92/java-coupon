@@ -86,6 +86,16 @@ public class IndexPerformanceTest {
         assertThat(averageElapsedTime).isLessThanOrEqualTo(100L);
     }
 
+    /*
+        1. 해결 방안
+        - 생성되어 있던 coupon_status 단일 인덱스 제거
+        - coupon_status, issue_started_at, issue_ended_at 복합 인덱스 생성
+        - 옵티마이저는 explain으로 실행 계획을 확인했을 때, rows * filtered 값으로 예상 비용(cost)를 계산한다.
+          coupon_status 단일 인덱스일 경우의 예상 비용(rows=2408, filtered=1.11)이
+          coupon_status, issue_started_at, issue_ended_at 복합 인덱스의 예상 비용(rows=2408, filtered=3.33)보다 낮으므로
+          두 인덱스가 같이 있을 땐 단일 인덱스를 선택한다. 따라서 단일 인덱스 제거 후 복합 인덱스를 설정한다.
+        2. 개선된 성능 시간: 15ms -> 4ms
+    */
     @Test
     void 현재_발급_가능한_쿠폰_조회() throws InterruptedException {
         AtomicBoolean running = new AtomicBoolean(false);
