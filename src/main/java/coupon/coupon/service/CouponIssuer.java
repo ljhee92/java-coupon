@@ -28,11 +28,12 @@ public class CouponIssuer {
         this.observers = observers;
     }
 
+    @Transactional
     public MemberCoupon issueCoupon(Long couponId, Long memberId) {
         log.info("쿠폰 발급 요청: couponId={}, memberId={}", couponId, memberId);
 
         Member member = memberService.getMember(memberId);
-        Coupon coupon = couponService.getCoupon(couponId);
+        Coupon coupon = couponService.getCouponWithRock(couponId);
         MemberCoupon memberCoupon = issueMemberCoupon(member, coupon);
 
         observers.forEach(observer -> observer.onIssue(memberCoupon.getId()));

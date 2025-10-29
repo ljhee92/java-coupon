@@ -2,9 +2,12 @@ package coupon.coupon.repository;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponStatus;
+import jakarta.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +30,8 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
     @Modifying
     @Query("update Coupon c set c.useCount = :useCount where c.id = :couponId")
     void updateUseCount(@Param("couponId") Long couponId, @Param("useCount") Long useCount);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select c from Coupon c where c.id = :id")
+    Optional<Coupon> findByIdWithLock(@Param("id") Long id);
 }

@@ -56,9 +56,9 @@ public class Coupon {
     private LocalDateTime modifiedAt;
 
     public void issue() {
-        if (this.issueStartedAt.isAfter(LocalDateTime.now()) || this.issueEndedAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("쿠폰을 발급할 수 없는 시간입니다.");
-        }
+//        if (this.issueStartedAt.isAfter(LocalDateTime.now()) || this.issueEndedAt.isBefore(LocalDateTime.now())) {
+//            throw new IllegalArgumentException("쿠폰을 발급할 수 없는 시간입니다.");
+//        }
         if (couponStatus.isNotIssuable() || !this.issuable) {
             throw new IllegalArgumentException("쿠폰을 발급할 수 없는 상태입니다.");
         }
