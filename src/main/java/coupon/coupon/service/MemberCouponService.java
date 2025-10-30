@@ -41,7 +41,7 @@ public class MemberCouponService {
     @Transactional
     public void useCoupon(Long memberId, Long memberCouponId) {
         Member member = memberService.getMember(memberId);
-        MemberCoupon memberCoupon = memberCouponRepository.findById(memberCouponId)
+        MemberCoupon memberCoupon = memberCouponRepository.findByIdWithLock(memberCouponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 쿠폰입니다. memberCouponId: " + memberCouponId));
         if (!Objects.equals(memberCoupon.getMemberId(), member.getId())) {
             throw new IllegalArgumentException(
