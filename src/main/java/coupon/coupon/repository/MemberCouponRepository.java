@@ -29,6 +29,6 @@ public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long
                              @Param("usedAt") LocalDateTime usedAt);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select mc from MemberCoupon mc where mc.id = :id")
+    @Query("select mc from MemberCoupon mc join fetch mc.coupon where mc.id = :id")
     Optional<MemberCoupon> findByIdWithLock(@Param("id") Long id);
 }
